@@ -10,7 +10,7 @@ def app():
 
         Besonders hilfreich für Menschen mit Atemwegserkrankungen: Die App gibt eine individuelle Empfehlung, ob du dich im Freien aufhalten solltest, körperliche Aktivitäten besser vermeidest oder zusätzliche Schutzmaßnahmen (z. B. Maske) sinnvoll sind. So behältst du nicht nur den Überblick über deine Umgebung – sondern kannst auch gezielt auf deine Gesundheit achten.
     """)
-    st.image("/Users/linnaanima/Downloads/Abschlussprojekt/AIRBUDDY/Streamlit_Airbuddy/picture.png", caption="AirBUDDY")
+    st.image("picture.png", caption="AirBUDDY")
 
 
     st.title("Das Problem")
