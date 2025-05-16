@@ -1,0 +1,35 @@
+import streamlit as st
+import page_start
+import Luft
+import Gewitter
+import Sahara
+import Jahresbilanz
+import Luft_Pollen
+import Urlaubsorte
+import ICD
+import Dash
+
+st.title("AIRBUDDY - Deine Luftqualität.")
+
+
+pages = {
+    "Start"                 : page_start,
+    "☁️ "                    : Dash,
+    "Luft"                  : Luft,
+    "Pollen"                : Luft_Pollen,
+    "Gewitter"             : Gewitter,
+    "Sahara"                : Sahara,
+    "Bilanz"                : Jahresbilanz,
+    "Urlaub"                : Urlaubsorte,
+    "ICD"                   : ICD
+}
+
+
+
+select = st.sidebar.radio("",list(pages.keys()))
+
+pages[select].app()
+
+
+st.sidebar.markdown("---")
+st.sidebar.write("🧠 Linda powered by :coffee:  ");  
