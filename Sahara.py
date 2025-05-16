@@ -76,7 +76,6 @@ def app():
 
     df = pd.DataFrame(df_liste)
 
-    st.subheader("📊 Übersicht der Orte")
     if not df.empty:
         df_display = df[["Ort", "AOD max", "Saharastaub"]].copy()
         df_display["AOD max"] = df_display["AOD max"].apply(lambda x: f"{x:.2f}")
