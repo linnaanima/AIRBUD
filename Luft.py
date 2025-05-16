@@ -48,7 +48,7 @@ def app():
         else:
             return "Luftqualität ist schlecht. Personen mit Atemwegserkrankungen sollten den Aufenthalt im Freien vermeiden oder Schutzmaßnahmen treffen."
 
-    st.title("Luftqualitätswerte")
+    st.title("Luftqualität.")
 
     stations = [
         {"id": "1584", "name": "Kiel-Bremerskamp", "region": "Kiel", "lat": 54.3439, "lon": 10.1185},
