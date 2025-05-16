@@ -16,7 +16,7 @@ def app():
         df_kr = df_kr.dropna(subset=["Jahr", "Fälle", "Bezeichnung"])
     except Exception as e:
         st.error("❌ Fehler beim Einlesen der Krankenhausdaten:")
-        st.exception(e)
+        st.exception(e) 
         st.stop()
 
     # Diagnoseauswahl
