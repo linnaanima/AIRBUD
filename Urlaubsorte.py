@@ -4,8 +4,7 @@ import plotly.express as px
 
 def app():
     def load_data():
-        df = pd.read_excel(
-            "who_aap_2021_v9_11august2022.xlsx",
+        df = pd.read_excel("who_aap_2021_v9_11august2022.xlsx",
             sheet_name='AAP_2022_city_v9'
         )
         df = df[['ISO3', 'WHO Country Name', 'City or Locality', 'PM2.5 (μg/m3)', 'Measurement Year']].dropna()
