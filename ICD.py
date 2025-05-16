@@ -40,7 +40,7 @@ def app():
 
     try:
         df_no2 = pd.read_excel("https://www.duh.de/fileadmin/user_upload/download/Projektinformation/Verkehr/Luftreinhaltung/DUH-Auswertung_EEA_Todesf%C3%A4lle_NO2.xlsx", skiprows=2)
-        df_pm25 = pd.read_excel("DUH-Auswertung_EEA_Todesfälle_PM2_5.xlsx", skiprows=2)
+        df_pm25 = pd.read_excel("https://www.duh.de/fileadmin/user_upload/download/Projektinformation/Verkehr/Luftreinhaltung/DUH-Auswertung_EEA_Todesf%C3%A4lle_PM2_5.xlsx", skiprows=2)
 
         df_no2.columns = df_no2.columns.str.strip()
         df_pm25.columns = df_pm25.columns.str.strip()
