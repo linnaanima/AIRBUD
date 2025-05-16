@@ -41,7 +41,6 @@ def app():
     </style>
     """, unsafe_allow_html=True)
 
-    st.title("Your Buddy")
     
     # Zentrale Datenstruktur für Städte und Regionen
     locations = {
@@ -309,17 +308,7 @@ def app():
     
     # Progress Bar ausblenden nach dem Laden
     progress_bar.empty()
-    
-    # Informationszeile für Standort - alle auf einer Linie, AOD kurz erklärt
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.write(f"📍 Station: {selected_station}")
-    with col2:
-        st.write(f"🌱 Region: {location_data['pollen_region']}")
-    with col3:
-        st.write(f"🗓️ Gewittervorhersage für 5 Tage")
-    with col4:
-        st.write(f"🌡️ AOD: Saharastaub-Messwert")
+
     
     # Obere Informationskarten
     col1, col2, col3, col4 = st.columns(4)
