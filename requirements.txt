@@ -1,0 +1,11 @@
+streamlit
+requests
+plotly
+pandas
+numpy
+geopy
+folium
+streamlit-folium
+altair
+Pillow
+pydeck
