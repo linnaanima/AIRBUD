@@ -146,8 +146,6 @@ def app():
         rating = calculate_air_quality_rating(lqi_values)
         health_advice = get_health_advice(average_lqi)
 
-        st.subheader("🌬️ Luftqualitätsbewertung für Atemwegserkrankte")
-        st.write(health_advice)
 
         # Checkboxen zur Anzeige von Grenzwerten
         show_who = st.checkbox("🔍 WHO-Grenzwerte anzeigen", value=True)
