@@ -9,7 +9,7 @@ def app():
 
     # Lokales CSV einlesen
     try:
-        df_kr = pd.read_csv("/Users/linnaanima/Downloads/Abschlussprojekt/AIRBUDDY/Streamlit_Airbuddy/krankenhausdaten_long.csv")
+        df_kr = pd.read_csv("krankenhausdaten_long.csv")
         df_kr.columns = df_kr.columns.str.strip()
         df_kr["Jahr"] = pd.to_numeric(df_kr["Jahr"], errors="coerce")
         df_kr["Fälle"] = pd.to_numeric(df_kr["Fälle"], errors="coerce")
@@ -39,8 +39,8 @@ def app():
     st.subheader("Todesfälle durch Luftschadstoffe 2022 (EEA-Auswertung)")
 
     try:
-        df_no2 = pd.read_excel("/Users/linnaanima/Downloads/Abschlussprojekt/AIRBUDDY/Streamlit_Airbuddy/DUH-Auswertung_EEA_Todesfälle_NO2.xlsx", skiprows=2)
-        df_pm25 = pd.read_excel("/Users/linnaanima/Downloads/Abschlussprojekt/AIRBUDDY/Streamlit_Airbuddy/DUH-Auswertung_EEA_Todesfälle_PM2_5.xlsx", skiprows=2)
+        df_no2 = pd.read_excel("DUH-Auswertung_EEA_Todesfälle_NO2.xlsx", skiprows=2)
+        df_pm25 = pd.read_excel("DUH-Auswertung_EEA_Todesfälle_PM2_5.xlsx", skiprows=2)
 
         df_no2.columns = df_no2.columns.str.strip()
         df_pm25.columns = df_pm25.columns.str.strip()
