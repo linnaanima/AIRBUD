@@ -106,6 +106,22 @@ def app():
     
     fig_choropleth.update_geos(showcoastlines=True, coastlinecolor="LightGray")
     
+    # Größere Karte + Legende unten
+    fig_choropleth.update_layout(
+        height=800,  # Erhöhe die Kartenhöhe
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=-0.2,
+            xanchor="center",
+            x=0.5
+        ),
+        margin=dict(t=60, b=60, l=0, r=0)  # Weniger Rand = mehr Platz für die Karte
+    )
+
+st.plotly_chart(fig_choropleth, use_container_width=True)
+
+    
     # Legende unter die Karte legen
     fig_choropleth.update_layout(
         legend=dict(
