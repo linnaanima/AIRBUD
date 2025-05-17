@@ -14,7 +14,7 @@ st.title("AIRBUDDY - Deine Luftqualität.")
 
 pages = {
     "Start"                 : page_start,
-    "☁️ "                    : Dash,
+    "BUDDY"                 : Dash,
     "Luft"                  : Luft,
     "Pollen"                : Luft_Pollen,
     "Gewitter"             : Gewitter,
@@ -26,7 +26,7 @@ pages = {
 
 
 
-select = st.sidebar.radio("5",list(pages.keys()))
+select = st.sidebar.radio("☁️",list(pages.keys()))
 
 pages[select].app()
 
