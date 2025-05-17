@@ -4,7 +4,7 @@ import pandas as pd
 
 
 def app():
-    st.subheader("Luftqualität im Blick – für Atemwegserkrankte")
+    st.subheader("Luftqualität im Blick für Atemwegserkrankte")
     st.write("""
         Diese App liefert dir in Echtzeit verlässliche Informationen zur aktuellen Luftqualität an deinem Standort. Basierend auf Messwerten wie Feinstaub (PM2.5/PM10), Ozon, Stickstoffdioxid und weiteren Schadstoffen bewertet die App die Luftqualität tagesaktuell.
 
