@@ -11,7 +11,16 @@ import Dash
 
 st.title("AIRBUDDY - Deine Luftqualität.")
 
-
+st.markdown(
+    f'''
+        <style>
+            .sidebar .sidebar-content {{
+                width: 200px;
+            }}
+        </style>
+    ''',
+    unsafe_allow_html=True
+)
 pages = {
     "Start"                 : page_start,
     "BUDDY"                 : Dash,
@@ -26,7 +35,7 @@ pages = {
 
 
 
-select = st.sidebar.radio("☁️",list(pages.keys()))
+select = st.sidebar.radio("",list(pages.keys()))
 
 pages[select].app()
 
