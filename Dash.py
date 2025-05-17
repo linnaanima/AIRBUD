@@ -257,9 +257,6 @@ def app():
         station_id = stations[0]["id"]
         st.info(f"Verfügbare Messstation: {selected_station}")
     
-    # Aktualisierungsbutton
-    if st.button("🔄 Daten aktualisieren"):
-        st.experimental_rerun()
     
     # Übersichts-Dashboard
     st.subheader(f"Umwelt-Übersicht für {selected_city}")
