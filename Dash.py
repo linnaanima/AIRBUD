@@ -218,7 +218,6 @@ def app():
         # Standortbutton hinzufügen
         if st.button("📍 Meinen Standort verwenden"):
 
-            st.info("Standortbestimmung wird durchgeführt...")
             
             # JavaScript-Code für Geolokalisierung einbinden
             st.markdown("""
