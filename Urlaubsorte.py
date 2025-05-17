@@ -119,7 +119,7 @@ def app():
         margin=dict(t=60, b=60, l=0, r=0)  # Weniger Rand = mehr Platz für die Karte
     )
 
-st.plotly_chart(fig_choropleth, use_container_width=True)
+    st.plotly_chart(fig_choropleth, use_container_width=True)
 
     
     # Legende unter die Karte legen
