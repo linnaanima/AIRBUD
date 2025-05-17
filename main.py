@@ -26,7 +26,7 @@ pages = {
 
 
 
-select = st.sidebar.radio("",list(pages.keys()))
+select = st.sidebar.radio("5",list(pages.keys()))
 
 pages[select].app()
 
