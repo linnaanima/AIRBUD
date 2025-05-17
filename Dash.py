@@ -206,7 +206,7 @@ def app():
     }
     
     # Liste der Allergenen für allergisches Asthma
-    asthma_allergene = ["Graeser", "Hasel", "Birke", "Erle", "Ambrosia", "Beifuß"]
+    asthma_allergene = ["Graeser", "Hasel", "Birke", "Erle", "Ambrosia", "Beifuß", "Roggen"]
     
     # Stadt-Auswahl mit Standortfunktion
     col1, col2 = st.columns([3, 1])
