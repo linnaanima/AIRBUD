@@ -81,10 +81,11 @@ def app():
     )
     
     st.plotly_chart(fig_cities)
-
-    # --- Weltkarte als Choropleth ---
+# --- Weltkarte als Choropleth ---
     st.header("Weltkarte der Luftqualität (nach Ländern)")
+    
     df_country["Luftqualitätsstufe"] = df_country["PM2.5 (μg/m3)"].apply(classify_pm25)
+    
     color_map = {
         "Sehr gut (0–5)": "#2ECC71",
         "Gut (5–10)": "#A9DFBF",
@@ -105,7 +106,19 @@ def app():
     
     fig_choropleth.update_geos(showcoastlines=True, coastlinecolor="LightGray")
     
-    st.plotly_chart(fig_choropleth)
+    # Legende unter die Karte legen
+    fig_choropleth.update_layout(
+        legend=dict(
+            orientation="h",      # horizontal
+            yanchor="bottom",     # vertikale Ausrichtung
+            y=-0.2,               # Position unter der Karte
+            xanchor="center",
+            x=0.5
+        )
+    )
+    
+    st.plotly_chart(fig_choropleth, use_container_width=True)
+
 
     # --- WHO Einstufung anzeigen ---
     st.markdown("""
