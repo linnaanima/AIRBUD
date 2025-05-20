@@ -275,14 +275,11 @@ def app():
     
     # Daten abrufen
     with st.spinner("Lade alle Umweltdaten..."):
-        # Luftqualitätsdaten - standardmäßig die letzten 24 Stunden
+        # Luftqualitätsdaten - fest auf 24 Stunden eingestellt
         progress_bar.progress(10)
         
-        # Seitenleiste für Dateneinstellungen
-        with st.sidebar:
-            st.header("Daten-Einstellungen")
-            data_days = st.slider("Daten der letzten X Tage anzeigen:", 1, 7, 1)
-            st.info("Standardmäßig werden nur die letzten 24 Stunden angezeigt.")
+        # Feste Einstellung auf einen Tag (keine Auswahlmöglichkeit)
+        data_days = 1
         
         air_quality_data = get_air_quality_data(
             station_id, 
