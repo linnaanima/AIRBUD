@@ -465,6 +465,3 @@ def app():
             ).add_to(marker_cluster)
             
         folium_static(all_stations_map)
-
-if __name__ == "__main__":
-    app()
