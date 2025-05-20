@@ -19,9 +19,7 @@ def app():
     .main {
         background-color: #f8f9fa;
     }
-    .stApp {
-        max-width: 1200px;
-        margin: 0 auto;
+
     }
     h1, h2, h3 {
         color: #0c326f;
@@ -38,6 +36,12 @@ def app():
     .moderate { color: #f6e45e; font-weight: bold; }
     .poor { color: #e87461; font-weight: bold; }
     .very-poor { color: #962945; font-weight: bold; }
+        .control-panel {
+        background-color: white;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
     }
     </style>
     """, unsafe_allow_html=True)
