@@ -34,7 +34,7 @@ def app():
         height: 50px;
         white-space: pre-wrap;
         background-color: #f0f2f6;
-        border-radius: 4px 4px 4px 4px;
+        border-radius: 4px 4px 0px 0px;
         gap: 1px;
         padding-top: 10px;
         padding-bottom: 10px;
