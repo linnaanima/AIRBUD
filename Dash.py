@@ -22,13 +22,6 @@ AIR_QUALITY_COMPONENTS = {
     "12": {"code": "PM10NI", "symbol": "Ni", "unit": "ng/m³", "name": "Nickel in particulate matter"}
 }
 
-if __name__ == "__main__":
-    st.set_page_config(
-        page_title="Umwelt-Dashboard",
-        page_icon="🌍",
-        layout="wide"
-    )
-
 def app():
     
     # Stile für das Dashboard
@@ -39,10 +32,9 @@ def app():
     }
     .stTabs [data-baseweb="tab"] {
         height: 50px;
-        wide: 20px;
         white-space: pre-wrap;
         background-color: #f0f2f6;
-        border-radius: 4px 4px 0px 0px;
+        border-radius: 4px 4px 4px 4px;
         gap: 1px;
         padding-top: 10px;
         padding-bottom: 10px;
