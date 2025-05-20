@@ -1,3 +1,160 @@
+korrigiere die Bewertung in diesem Code, mache die Messwerte Ästhetischer und auch die Karte von der Messstation:  2
+1.1 Übersicht der verfügbaren Schadstoffe (components) und
+Auswertungen (scopes)
+ID Schadstoff Kürzel
+1 Feinstaub (PM10) PM10
+2 Kohlenmonoxid CO
+3 Ozon O3
+4 Schwefeldioxid SO2
+5 Stickstoffdioxid NO2
+6 Blei im Feinstaub PB
+7 Benzo(a)pyrene im Feinstaub BaP
+8 Benzol C6H6
+9 Feinstaub (PM2,5) PM2,5
+10 Arsen im Feinstaub As
+11 Cadmium im Feinstaub Cd
+12 Nickel im Feinstaub Ni
+Bearbeiten
+
+The user has shared a Python code file (paste.txt) that appears to be a Streamlit application for analyzing and displaying air quality data from various stations in Germany. The code fetches data from the Umweltbundesamt API, processes it, and displays it along with a map showing the locations of the measuring stations.
+
+The user also shared an image that shows a grading table for different air pollutants (NO2, PM10, PM2.5, O3) with rating categories from "sehr gut" (very good) to "sehr schlecht" (very bad) and their corresponding concentration thresholds.
+
+At the end, the user asks me to correct the evaluation/rating in the code, make the measurements more aesthetic, and improve the map of the measurement station. They've also shared some information about the available pollutants (components) and their IDs.
+
+Let's analyze the code and identify what needs to be corrected:
+
+    Comparing the ratings in the code with the table in the image:
+        For PM10: The code uses thresholds 20, 35, 50, 100 for "Sehr gut", "Gut", "Mäßig", "Schlecht", but the image shows 0-20, 21-35, 36-50, 51-100
+        For PM2.5: The code uses thresholds 10, 20, 25, 50, but the image shows 0-10, 11-20, 21-25, 26-50
+        For NO: The code uses NO instead of NO2 (ID 5) with thresholds 20, 40, 100, 200, but the image shows 0-20, 21-40, 41-100, 101-200 for NO2
+        For O3: The code uses thresholds 60, 120, 180, 240, which matches the image 0-60, 61-120, 121-180, 181-240
+    Component IDs in the code vs. the list:
+        Component ID 3 is mapped to PM10 in the code, but according to the list, it should be O3 (Ozone)
+        Component ID 5 is mapped to PM2.5 in the code, but according to the list, it should be NO2 (Nitrogen dioxide)
+        Component ID 1 is mapped to NO in the code, but according to the list, it should be PM10
+        Component ID 9 is mapped to O3 in the code, but according to the list, it should be PM2.5
+    Aesthetic improvements needed for measurements and map.
+
+Let me update the code to fix these issues:
+
+    Fix the component ID mappings
+    Update the air quality rating thresholds to match the image
+    Make the measurements and map more aesthetically pleasing
+
+Here's my plan for improvements:
+
+    Correct component ID mappings
+    Align rating thresholds with the image
+    Enhance the visualization of measurements:
+        Add color-coded indicators based on quality ratings
+        Improve layout and formatting
+        Add more visual elements for better data representation
+    Improve the map:
+        Use a more visually appealing map style
+        Add color-coded markers based on air quality
+        Add a legend to the map
+        Possibly add a heatmap layer if appropriate
+
+Let me implement these changes:
+
+I'll improve the code by fixing the air quality evaluations, enhancing the visual design, and improving the map. Here are the key issues I need to fix:
+
+    The component IDs are incorrectly mapped (e.g., ID 3 is shown as PM10 but should be O3)
+    The air quality rating thresholds need to match the standards in your chart
+    The UI needs aesthetic improvements for better readability
+    The map visualization can be enhanced
+
+Let me create an updated version:
+Air Quality App Improvements
+
+I've made comprehensive improvements to your air quality monitoring application. Here are the key changes:
+1. Fixed Component ID Mappings
+
+I corrected the pollutant mappings according to the list you provided:
+
+    ID 1: PM10 (was incorrectly mapped to NO)
+    ID 3: O3 (was incorrectly mapped to PM10)
+    ID 5: NO2 (was incorrectly mapped to PM2.5)
+    ID 9: PM2.5 (was incorrectly mapped to O3)
+
+2. Updated Air Quality Rating Thresholds
+
+The rating thresholds now exactly match your chart:
+
+    PM10: 0-20 (sehr gut), 21-35 (gut), 36-50 (mäßig), 51-100 (schlecht), >100 (sehr schlecht)
+    PM2.5: 0-10 (sehr gut), 11-20 (gut), 21-25 (mäßig), 26-50 (schlecht), >50 (sehr schlecht)
+    NO2: 0-20 (sehr gut), 21-40 (gut), 41-100 (mäßig), 101-200 (schlecht), >200 (sehr schlecht)
+    O3: 0-60 (sehr gut), 61-120 (gut), 121-180 (mäßig), 181-240 (schlecht), >240 (sehr schlecht)
+
+3. Aesthetic Improvements
+
+    Modern UI: Added custom styling with a cleaner, more modern look
+    Dashboard Layout: Reorganized into a logical dashboard flow with sidebar controls
+    Color-coded Indicators: Added color-coding that matches the rating categories
+    Metric Cards: Created visually appealing cards for current measurements
+    Interactive Charts: Improved charts with threshold lines and better formatting
+    Tabbed Interface: Organized pollutant charts into tabs for better navigation
+
+4. Enhanced Map Visualization
+
+    Improved Map Style: Used a cleaner "CartoDB positron" map style
+    Color-coded Markers: Station markers now use colors based on air quality
+    Coverage Area: Added a circle showing the approximate coverage area of the station
+    Legend: Added a legend explaining the color-coding system
+    Better Popups: Enhanced popups with more information
+    Other Stations: Added smaller markers for other stations
+
+5. Additional Improvements
+
+    Health Advice: Improved the health advice feature based on air quality
+    Error Handling: Added better error handling for API requests
+    WHO and German Thresholds: Separate checkboxes for each pollutant
+    Data Visualization: More comprehensive data visualization options
+    Responsive Design: Improved layout for different screen sizes
+
+The updated app provides a much more professional and user-friendly experience while correctly evaluating air quality based on the standards you provided.
+Wiederholen
+
+Ich möchte das die extra sidebar wieder gelöscht wird. Alle Luftwerte möchte ich auf einem Diagramm sehen und dazu die Grenzwerte von WHO und Deutschland einblenden können.
+Bearbeiten
+
+Du möchtest die folgenden Änderungen am Code vornehmen:
+
+    Die Sidebar entfernen und die Steuerelemente in das Hauptfenster integrieren
+    Alle Luftwerte (verschiedene Schadstoffe) in einem einzigen Diagramm anzeigen, anstatt separate Tabs für jeden Schadstoff zu haben
+    Die WHO- und Deutschland-Grenzwerte weiterhin einblendbar machen
+
+Ich werde den Code entsprechend anpassen:
+
+    Die Sidebar-Komponenten in das Hauptfenster verschieben
+    Das Diagramm so ändern, dass alle Schadstoffe in einem Diagramm angezeigt werden
+    Die Grenzwert-Checkboxen beibehalten
+
+Hier ist mein Plan zur Anpassung:
+
+    Den st.sidebar Code entfernen und die Komponenten direkt im Hauptfenster platzieren
+    Das Diagramm ändern, um alle Schadstoffe gleichzeitig anzuzeigen
+    Die WHO- und DE-Grenzwert-Toggles beibehalten
+    Die Tab-Struktur entfernen, da wir nun alle Werte in einem Diagramm zeigen
+
+Ich werde den Code anpassen, um die Sidebar zu entfernen und alle Luftwerte in einem einzigen Diagramm mit einblendbaren Grenzwerten darzustellen.
+
+Ich habe den Code angepasst:
+
+    Die Sidebar wurde entfernt und alle Steuerelemente wurden in den Hauptbereich der Anwendung verschoben.
+    Alle Luftqualitätswerte werden jetzt in einem gemeinsamen Diagramm angezeigt, anstatt in separaten Tabs für jeden Schadstoff.
+    WHO- und Deutsche Grenzwerte können weiterhin über Checkboxen ein- und ausgeblendet werden.
+
+Diese Änderungen sollten das gewünschte Ergebnis liefern - eine übersichtliche Darstellung aller Luftqualitätsmesswerte in einem Diagramm mit der Möglichkeit, die relevanten Grenzwerte einzublenden.
+
+Das Diagramm verwendet unterschiedliche Farben für die verschiedenen Schadstoffe und zeigt die Grenzwerte als gestrichelte (WHO) bzw. gepunktete (Deutschland) Linien an. Unter dem Diagramm werden detaillierte Informationen zu den Grenzwerten angezeigt, wenn diese eingeblendet sind.
+
+Möchtest du noch weitere Anpassungen vornehmen?
+Wiederholen
+Ihr Nutzungskontingent ist fast aufgebraucht - Ihre Limits werden um 22:00 zurückgesetzt
+
+
 import streamlit as st
 import requests
 import pandas as pd
@@ -11,7 +168,12 @@ from folium.plugins import MarkerCluster
 import branca.colormap as cm
 
 def app():
-
+    # Set page config
+    st.set_page_config(
+        page_title="Luftqualitätsmonitor",
+        page_icon="🌬️",
+        layout="wide"
+    )
     
     # Custom CSS for better aesthetics
     st.markdown("""
@@ -38,6 +200,13 @@ def app():
     .moderate { color: #f6e45e; font-weight: bold; }
     .poor { color: #e87461; font-weight: bold; }
     .very-poor { color: #962945; font-weight: bold; }
+    .control-panel {
+        background-color: white;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -116,9 +285,9 @@ def app():
     st.title("🌬️ Luftqualitätsmonitor Deutschland")
     st.markdown("Überwachung und Analyse der Luftqualität an verschiedenen Messstationen in Deutschland")
 
-    # Sidebar for station selection and date controls
-    with st.sidebar:
-        st.header("📍 Messstation & Zeitraum")
+    # Station selection and date controls in main area
+    with st.container():
+        st.markdown('<div class="control-panel">', unsafe_allow_html=True)
         
         stations = [
             {"id": "1584", "name": "Kiel-Bremerskamp", "region": "Kiel", "lat": 54.3439, "lon": 10.1185},
@@ -143,37 +312,42 @@ def app():
             {"id": "224", "name": "Stuttgart-Bad Cannstatt", "region": "Stuttgart", "lat": 48.8088, "lon": 9.2297}
         ]
         
-        # Get stations by region for better organization
-        regions = sorted(list(set([s["region"] for s in stations])))
-        selected_region = st.selectbox("Region auswählen:", regions, index=regions.index("Kiel") if "Kiel" in regions else 0)
-        
-        # Filter stations by selected region
-        region_stations = [s for s in stations if s["region"] == selected_region]
-        station_options = [f"{s['name']}" for s in region_stations]
-        selected_station_name = st.selectbox("Messstation:", station_options)
-        
-        selected_station = next((s for s in stations if s["name"] == selected_station_name), None)
-        if not selected_station:
-            st.error("Station nicht gefunden.")
-            st.stop()
-        
-        station_id = selected_station["id"]
-        
-        st.subheader("⏱️ Zeitraum")
-        yesterday = datetime.now() - timedelta(days=1)
-        
         col1, col2 = st.columns(2)
         with col1:
-            start_date = st.date_input("Von:", yesterday.date())
+            st.subheader("📍 Messstation")
+            # Get stations by region for better organization
+            regions = sorted(list(set([s["region"] for s in stations])))
+            selected_region = st.selectbox("Region auswählen:", regions, index=regions.index("Kiel") if "Kiel" in regions else 0)
+            
+            # Filter stations by selected region
+            region_stations = [s for s in stations if s["region"] == selected_region]
+            station_options = [f"{s['name']}" for s in region_stations]
+            selected_station_name = st.selectbox("Messstation:", station_options)
+            
+            selected_station = next((s for s in stations if s["name"] == selected_station_name), None)
+            if not selected_station:
+                st.error("Station nicht gefunden.")
+                st.stop()
+            
+            station_id = selected_station["id"]
+        
         with col2:
-            end_date = st.date_input("Bis:", datetime.now().date())
+            st.subheader("⏱️ Zeitraum")
+            yesterday = datetime.now() - timedelta(days=1)
             
-        col3, col4 = st.columns(2)
-        with col3:
-            start_hour = st.number_input("Stunde (von):", 0, 23, 0)
-        with col4:
-            end_hour = st.number_input("Stunde (bis):", 0, 23, datetime.now().hour)
+            date_col1, date_col2 = st.columns(2)
+            with date_col1:
+                start_date = st.date_input("Von:", yesterday.date())
+            with date_col2:
+                end_date = st.date_input("Bis:", datetime.now().date())
+                
+            time_col1, time_col2 = st.columns(2)
+            with time_col1:
+                start_hour = st.number_input("Stunde (von):", 0, 23, 0)
+            with time_col2:
+                end_hour = st.number_input("Stunde (bis):", 0, 23, datetime.now().hour)
             
+        st.markdown('</div>', unsafe_allow_html=True)
         st.info("ℹ️ Die Daten werden für den ausgewählten Zeitraum von der Umweltbundesamt-API abgerufen.")
 
     # Main content
@@ -264,87 +438,133 @@ def app():
         </div>
         """, unsafe_allow_html=True)
 
-        # Show chart with thresholds
+        # Show chart with all pollutants and thresholds in one
         st.subheader("📈 Luftqualitätstrends")
         
-        # Tab for each pollutant
-        available_pollutants = air_quality_df["Komponente"].unique()
-        pollutant_tabs = st.tabs([p for p in available_pollutants])
+        # Controls for showing thresholds
+        threshold_col1, threshold_col2 = st.columns(2)
+        with threshold_col1:
+            show_who = st.checkbox("🔍 WHO-Grenzwerte anzeigen", value=True)
+        with threshold_col2:
+            show_de = st.checkbox("🏛️ Deutsche Grenzwerte anzeigen", value=True)
         
-        for i, pollutant in enumerate(available_pollutants):
-            with pollutant_tabs[i]:
-                pollutant_df = air_quality_df[air_quality_df["Komponente"] == pollutant]
-                
-                fig = px.line(
-                    pollutant_df,
-                    x="Zeitpunkt",
-                    y="Messwert",
-                    title=f"{pollutant} Trends",
-                    labels={"Messwert": f"{pollutant} ({pollutant_df['Einheit'].iloc[0]})", "Zeitpunkt": "Zeitpunkt"}
-                )
-                
-                # Add threshold lines based on the pollutant
-                thresholds = {
-                    "PM10": [(20, "Sehr gut / Gut"), (35, "Gut / Mäßig"), (50, "Mäßig / Schlecht"), (100, "Schlecht / Sehr schlecht")],
-                    "PM2.5": [(10, "Sehr gut / Gut"), (20, "Gut / Mäßig"), (25, "Mäßig / Schlecht"), (50, "Schlecht / Sehr schlecht")],
-                    "NO2": [(20, "Sehr gut / Gut"), (40, "Gut / Mäßig"), (100, "Mäßig / Schlecht"), (200, "Schlecht / Sehr schlecht")],
-                    "O3": [(60, "Sehr gut / Gut"), (120, "Gut / Mäßig"), (180, "Mäßig / Schlecht"), (240, "Schlecht / Sehr schlecht")]
-                }
-                
-                if pollutant in thresholds:
-                    for threshold, label in thresholds[pollutant]:
-                        fig.add_hline(
-                            y=threshold,
-                            line_dash="dash",
-                            line_color="rgba(0, 0, 0, 0.5)",
-                            annotation_text=label,
-                            annotation_position="top right"
-                        )
-                    
-                fig.update_layout(
-                    template="plotly_white",
-                    margin=dict(l=0, r=0, t=40, b=0),
-                    height=400,
-                    xaxis=dict(
-                        title="Zeitpunkt",
-                        gridcolor="rgba(0, 0, 0, 0.1)",
-                    ),
-                    yaxis=dict(
-                        title=f"{pollutant} ({pollutant_df['Einheit'].iloc[0]})",
-                        gridcolor="rgba(0, 0, 0, 0.1)",
-                    ),
-                    plot_bgcolor="white"
-                )
-                
-                st.plotly_chart(fig, use_container_width=True)
-                
-                # Add WHO and German threshold checkbox
-                col1, col2 = st.columns(2)
-                with col1:
-                    show_who = st.checkbox("🔍 WHO-Grenzwerte anzeigen", value=True, key=f"who_{pollutant}")
-                with col2:
-                    show_de = st.checkbox("🏛️ Deutsche Grenzwerte anzeigen", value=True, key=f"de_{pollutant}")
-                
-                # Show additional information about thresholds
-                who_thresholds = {
-                    "PM10": 45,
-                    "PM2.5": 15,
-                    "NO2": 25,
-                    "O3": 100
-                }
-                
-                de_thresholds = {
-                    "PM10": 50,
-                    "PM2.5": 25,
-                    "NO2": 40,
-                    "O3": 120
-                }
-                
-                if show_who and pollutant in who_thresholds:
-                    st.info(f"🌍 WHO-Grenzwert für {pollutant}: {who_thresholds[pollutant]} {pollutant_df['Einheit'].iloc[0]}")
-                
-                if show_de and pollutant in de_thresholds:
-                    st.info(f"🇩🇪 Deutscher Grenzwert für {pollutant}: {de_thresholds[pollutant]} {pollutant_df['Einheit'].iloc[0]}")
+        # Create a single chart with multiple lines for all pollutants
+        fig = go.Figure()
+        
+        # Different colors for different pollutants
+        color_map = {
+            "PM10": "#1f77b4",   # Blue
+            "PM2.5": "#ff7f0e",  # Orange
+            "NO2": "#2ca02c",    # Green
+            "O3": "#d62728",     # Red
+            "CO": "#9467bd",     # Purple
+            "SO2": "#8c564b"     # Brown
+        }
+        
+        # Add a trace for each pollutant
+        plotted_pollutants = []
+        
+        for comp_name in air_quality_df["Komponente"].unique():
+            pollutant_df = air_quality_df[air_quality_df["Komponente"] == comp_name]
+            
+            # Get the unit for this pollutant
+            unit = pollutant_df["Einheit"].iloc[0] if not pollutant_df.empty else "µg/m³"
+            
+            # Add the trace
+            fig.add_trace(go.Scatter(
+                x=pollutant_df["Zeitpunkt"],
+                y=pollutant_df["Messwert"],
+                mode="lines",
+                name=f"{comp_name} ({unit})",
+                line=dict(color=color_map.get(comp_name, "#000000"), width=2)
+            ))
+            
+            plotted_pollutants.append(comp_name)
+        
+        # Add WHO threshold lines if checked
+        who_thresholds = {
+            "PM10": 45,
+            "PM2.5": 15,
+            "NO2": 25,
+            "O3": 100
+        }
+        
+        if show_who:
+            for pollutant, threshold in who_thresholds.items():
+                if pollutant in plotted_pollutants:
+                    fig.add_trace(go.Scatter(
+                        x=[min(air_quality_df["Zeitpunkt"]), max(air_quality_df["Zeitpunkt"])],
+                        y=[threshold, threshold],
+                        mode="lines",
+                        name=f"WHO-Grenze ({pollutant})",
+                        line=dict(color=color_map.get(pollutant, "#000000"), width=1, dash="dash"),
+                        opacity=0.7
+                    ))
+        
+        # Add German threshold lines if checked
+        de_thresholds = {
+            "PM10": 50,
+            "PM2.5": 25,
+            "NO2": 40,
+            "O3": 120
+        }
+        
+        if show_de:
+            for pollutant, threshold in de_thresholds.items():
+                if pollutant in plotted_pollutants:
+                    fig.add_trace(go.Scatter(
+                        x=[min(air_quality_df["Zeitpunkt"]), max(air_quality_df["Zeitpunkt"])],
+                        y=[threshold, threshold],
+                        mode="lines",
+                        name=f"DE-Grenze ({pollutant})",
+                        line=dict(color=color_map.get(pollutant, "#000000"), width=1, dash="dot"),
+                        opacity=0.7
+                    ))
+        
+        # Customize the layout
+        fig.update_layout(
+            title=f"Luftqualitätstrends für {selected_station_name}",
+            xaxis_title="Zeitpunkt",
+            yaxis_title="Messwert",
+            template="plotly_white",
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.02,
+                xanchor="right",
+                x=1
+            ),
+            height=500,
+            margin=dict(l=50, r=20, t=60, b=50)
+        )
+        
+        st.plotly_chart(fig, use_container_width=True)
+        
+        # Show info about thresholds
+        if show_who or show_de:
+            st.markdown("#### Grenzwertinformationen")
+            
+            threshold_info = ""
+            
+            if show_who:
+                threshold_info += """
+                **WHO-Grenzwerte:**
+                - PM10: 45 µg/m³ (Tagesmittelwert)
+                - PM2.5: 15 µg/m³ (Tagesmittelwert)
+                - NO2: 25 µg/m³ (Stundenmittelwert)
+                - O3: 100 µg/m³ (8-Stunden-Mittelwert)
+                """
+            
+            if show_de:
+                threshold_info += """
+                **Deutsche Grenzwerte:**
+                - PM10: 50 µg/m³ (Tagesmittelwert, darf max. 35 mal im Jahr überschritten werden)
+                - PM2.5: 25 µg/m³ (Jahresmittelwert)
+                - NO2: 40 µg/m³ (Jahresmittelwert)
+                - O3: 120 µg/m³ (8-Stunden-Mittelwert, darf max. 25 mal im Jahr überschritten werden)
+                """
+            
+            st.markdown(threshold_info)
 
         # Map
         st.subheader("🗺️ Messstation auf der Karte")
