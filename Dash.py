@@ -1,10 +1,18 @@
-import streamlit as st
-import requests
-import pandas as pd
-import numpy as np
-from datetime import datetime, timedelta
-from geopy.geocoders import Nominatim
-import json
+# Air quality component definitions as JSON
+AIR_QUALITY_COMPONENTS = {
+    "1": {"code": "PM10", "symbol": "PM₁₀", "unit": "µg/m³", "name": "Particulate matter"},
+    "2": {"code": "CO", "symbol": "CO", "unit": "mg/m³", "name": "Carbon monoxide"},
+    "3": {"code": "O3", "symbol": "O₃", "unit": "µg/m³", "name": "Ozone"},
+    "4": {"code": "SO2", "symbol": "SO₂", "unit": "µg/m³", "name": "Sulphur dioxide"},
+    "5": {"code": "NO2", "symbol": "NO₂", "unit": "µg/m³", "name": "Nitrogen dioxide"},
+    "6": {"code": "PM10PB", "symbol": "Pb", "unit": "µg/m³", "name": "Lead in particulate matter"},
+    "7": {"code": "PM10BAP", "symbol": "BaP", "unit": "ng/m³", "name": "Benzo(a)pyrene in particulate matter"},
+    "8": {"code": "CHB", "symbol": "C₆H₆", "unit": "µg/m³", "name": "Benzene"},
+    "9": {"code": "PM2", "symbol": "PM₂,₅", "unit": "µg/m³", "name": "Particulate matter"},
+    "10": {"code": "PM10AS", "symbol": "As", "unit": "ng/m³", "name": "Arsenic in particulate matter"},
+    "11": {"code": "PM10CD", "symbol": "Cd", "unit": "ng/m³", "name": "Cadmium in particulate matter"},
+    "12": {"code": "PM10NI", "symbol": "Ni", "unit": "ng/m³", "name": "Nickel in particulate matter"}
+}
 
 if __name__ == "__main__":
     st.set_page_config(
@@ -314,32 +322,27 @@ def app():
         st.subheader("📊 Luft")
         
         if air_quality_data:
-            lqi_values = []
-            for timestamp, values in air_quality_data.items():
-                components = values[3:]
-                for component in components:
-                    try:
-                        lqi_value = float(component[3])
-                        lqi_values.append(lqi_value)
-                    except:
-                        continue
+            # Berechnung des offiziellen LQI basierend auf dem schlechtesten Einzelwert
+            rating = calculate_air_quality_rating(air_quality_data)
             
-            if lqi_values:
-                average_lqi = np.mean(lqi_values)
-                rating = calculate_air_quality_rating(average_lqi)
-                
-                # Farbcodierte LQI-Anzeige entsprechend korrekter Bewertung (LQI < 1 ist sehr gut)
-                if rating == "Sehr gut":
-                    st.success(f"LQI: {average_lqi:.1f} - {rating}")
-                elif rating == "Gut":
-                    st.info(f"LQI: {average_lqi:.1f} - {rating}")
-                elif rating == "Mäßig":
-                    st.warning(f"LQI: {average_lqi:.1f} - {rating}")
-                else:
-                    st.error(f"LQI: {average_lqi:.1f} - {rating}")
-                    st.error("❌ Längere Aufenthalte im Freien vermeiden, insbesondere für Risikogruppen.")
+            # Farbcodierte LQI-Anzeige entsprechend der UBA-Bewertung
+            if rating == "Sehr gut":
+                st.success(f"🟦 Luftqualität: {rating}")
+                st.markdown("✅ **Beste Voraussetzungen, um sich ausgiebig im Freien aufzuhalten.**")
+            elif rating == "Gut":
+                st.info(f"🟩 Luftqualität: {rating}")
+                st.markdown("✅ **Genießen Sie Ihre Aktivitäten im Freien, gesundheitlich nachteilige Wirkungen sind nicht zu erwarten.**")
+            elif rating == "Mäßig":
+                st.warning(f"🟨 Luftqualität: {rating}")
+                st.markdown("⚠️ **Kurzfristige nachteilige Auswirkungen auf die Gesundheit sind unwahrscheinlich. Empfindliche Personen sollten vorsichtig sein.**")
+            elif rating == "Schlecht":
+                st.error(f"🟧 Luftqualität: {rating}")
+                st.markdown("⚠️ **Bei empfindlichen Menschen können nachteilige gesundheitliche Wirkungen auftreten. Körperlich anstrengende Tätigkeiten im Freien vermeiden.**")
+            elif rating == "Sehr schlecht":
+                st.error(f"🟥 Luftqualität: {rating}")
+                st.markdown("❌ **Negative gesundheitliche Auswirkungen können auftreten. Empfindliche Personen sollten körperliche Anstrengungen im Freien vermeiden.**")
             else:
-                st.warning("Keine LQI-Daten verfügbar")
+                st.warning("Keine ausreichenden LQI-Daten verfügbar")
         else:
             st.error("Keine Luftqualitätsdaten verfügbar")
     
@@ -488,22 +491,26 @@ def display_air_quality_details(air_quality_data):
             except:
                 continue
 
-            if component_id == 3:
-                unit, comp_name = "µg/m³", "PM10"
-            elif component_id == 5:
-                unit, comp_name = "µg/m³", "PM2.5"
-            elif component_id == 1:
-                unit, comp_name = "µg/m³", "NO"
-            elif component_id == 9:
-                unit, comp_name = "µg/m³", "O3"
+            # Verwende das JSON-Mapping für die Komponenten
+            str_component_id = str(component_id)
+            if str_component_id in AIR_QUALITY_COMPONENTS:
+                component_info = AIR_QUALITY_COMPONENTS[str_component_id]
+                comp_name = component_info["code"]
+                unit = component_info["unit"]
+                full_name = component_info["name"]
+                symbol = component_info["symbol"]
             else:
                 unit, comp_name = "Nicht verfügbar", f"Komponente {component_id}"
+                full_name = "Unbekannte Komponente"
+                symbol = ""
 
             # Für tabellarische Darstellung
             air_quality_list.append({
                 "Zeitpunkt": timestamp,
                 "Messwert": component_value,
                 "Komponente": comp_name,
+                "Symbol": symbol,
+                "Vollständiger Name": full_name,
                 "LQI": lqi_value,
                 "Einheit": unit
             })
@@ -532,9 +539,23 @@ def display_air_quality_details(air_quality_data):
         messwerte = []
         for comp, val in latest_values.items():
             qual = interpret_component(comp, val)
+            # Finden der vollständigen Informationen für diese Komponente
+            comp_info = next((AIR_QUALITY_COMPONENTS[cid] for cid, info in AIR_QUALITY_COMPONENTS.items() 
+                             if info["code"] == comp), None)
+            
+            if comp_info:
+                symbol = comp_info["symbol"]
+                full_name = comp_info["name"]
+                unit = comp_info["unit"]
+            else:
+                symbol = comp
+                full_name = "Unbekannt"
+                unit = "µg/m³"
+                
             messwerte.append({
-                "Komponente": comp,
-                "Wert (µg/m³)": val,
+                "Symbol": symbol,
+                "Name": full_name,
+                f"Wert ({unit})": val,
                 "Bewertung": qual
             })
         
@@ -557,7 +578,11 @@ def display_air_quality_details(air_quality_data):
         for comp, val in latest_values.items():
             rating = interpret_component(comp, val)
             if rating == "Schlecht":
-                elevated_components.append(f"{comp}: {val:.1f} µg/m³ ({rating})")
+                # Finden der vollständigen Informationen für diese Komponente
+                comp_info = next((AIR_QUALITY_COMPONENTS[cid] for cid, info in AIR_QUALITY_COMPONENTS.items() 
+                                if info["code"] == comp), None)
+                unit = comp_info["unit"] if comp_info else "µg/m³"
+                elevated_components.append(f"{comp}: {val:.1f} {unit} ({rating})")
         
         if elevated_components:
             st.info(f"**Erhöhte Schadstoffwerte:** {', '.join(elevated_components)}")
@@ -572,6 +597,7 @@ def display_air_quality_details(air_quality_data):
         - Bei Symptomen wie Atemnot, Husten oder Reizungen: Ärztlichen Rat einholen
         """)
     
+
     # Kombiniertes Diagramm für alle Komponenten
     st.subheader("Verlauf der letzten 24 Stunden (alle Komponenten)")
     
@@ -593,40 +619,89 @@ def display_air_quality_details(air_quality_data):
     else:
         st.warning("Keine Komponentendaten verfügbar")
 
-def calculate_air_quality_rating(lqi_values):
-    """Berechnung der Luftqualitätsbewertung basierend auf LQI-Werten (korrigiert nach Thüringen Umweltportal)"""
-    average_lqi = np.mean(lqi_values)
-    if average_lqi < 1:  # Korrigiert auf Grundlage des Thüringer Umweltportals
-        return "Sehr gut"
-    elif average_lqi <= 2:
-        return "Gut"
-    elif average_lqi <= 3:
-        return "Mäßig"
-    else:
+def calculate_air_quality_rating(air_quality_data):
+    """Berechnung der Luftqualitätsbewertung basierend auf dem offiziellen Umweltbundesamt LQI
+    
+    Der LQI richtet sich nach dem Schadstoff mit der schlechtesten Bewertung.
+    """
+    if not air_quality_data:
+        return "Keine Daten"
+        
+    # Extrahiere die neuesten Werte für relevante Komponenten
+    pollutant_values = {}
+    
+    for timestamp, values in air_quality_data.items():
+        components = values[3:]
+        for component in components:
+            component_id = component[0]
+            str_component_id = str(component_id)
+            
+            try:
+                component_value = float(component[1])
+                
+                # Verwende JSON-Mapping für die Komponenten-Identifikation
+                if str_component_id in AIR_QUALITY_COMPONENTS:
+                    component_code = AIR_QUALITY_COMPONENTS[str_component_id]["code"]
+                    if component_code in ["PM10", "PM2", "NO2", "O3"]:
+                        if component_code not in pollutant_values:
+                            pollutant_values[component_code] = []
+                        pollutant_values[component_code].append(component_value)
+            except:
+                continue
+    
+    # Berechne den Durchschnitt für jeden Schadstoff
+    avg_values = {}
+    for comp, values in pollutant_values.items():
+        if values:
+            avg_values[comp] = np.mean(values)
+    
+    if not avg_values:
+        return "Keine Daten"
+    
+    # Bewerte jeden Schadstoff und finde die schlechteste Bewertung
+    ratings = []
+    for comp, val in avg_values.items():
+        rating = interpret_component(comp, val)
+        ratings.append(rating)
+    
+    # Priorität: Sehr schlecht > Schlecht > Mäßig > Gut > Sehr gut
+    if "Sehr schlecht" in ratings:
+        return "Sehr schlecht"
+    elif "Schlecht" in ratings:
         return "Schlecht"
+    elif "Mäßig" in ratings:
+        return "Mäßig"
+    elif "Gut" in ratings:
+        return "Gut"
+    else:
+        return "Sehr gut"
 
 def interpret_component(comp, val):
-    """Interpretiert den Messwert einer Komponente und gibt eine Bewertung zurück"""
+    """Interpretiert den Messwert einer Komponente gemäß offizieller Umweltbundesamt-Luftqualitätsindex-Skala"""
     if comp == "PM10":
         if val <= 20: return "Sehr gut"
-        elif val <= 40: return "Gut"
-        elif val <= 80: return "Mäßig"
-        else: return "Schlecht"
-    elif comp == "PM2.5":
+        elif val <= 35: return "Gut"
+        elif val <= 50: return "Mäßig"
+        elif val <= 100: return "Schlecht"
+        else: return "Sehr schlecht"
+    elif comp == "PM2":
         if val <= 10: return "Sehr gut"
         elif val <= 20: return "Gut"
-        elif val <= 40: return "Mäßig"
-        else: return "Schlecht"
-    elif comp == "NO":
-        if val <= 40: return "Sehr gut"
-        elif val <= 80: return "Gut"
-        elif val <= 160: return "Mäßig"
-        else: return "Schlecht"
+        elif val <= 25: return "Mäßig"
+        elif val <= 50: return "Schlecht"
+        else: return "Sehr schlecht"
+    elif comp == "NO2":
+        if val <= 20: return "Sehr gut"
+        elif val <= 40: return "Gut"
+        elif val <= 100: return "Mäßig"
+        elif val <= 200: return "Schlecht"
+        else: return "Sehr schlecht"
     elif comp == "O3":
         if val <= 60: return "Sehr gut"
         elif val <= 120: return "Gut"
         elif val <= 180: return "Mäßig"
-        else: return "Schlecht"
+        elif val <= 240: return "Schlecht"
+        else: return "Sehr schlecht"
     else:
         return "Nicht bewertet"
 
@@ -636,7 +711,7 @@ def calculate_smog_status(air_quality_data):
         return None
         
     # Extrahiere die neuesten Werte für relevante Komponenten
-    latest_values = {"PM10": 0, "PM2.5": 0, "NO": 0, "O3": 0}
+    latest_values = {"PM10": 0, "PM2": 0, "NO2": 0, "O3": 0}
     latest_timestamp = None
     
     for timestamp, values in air_quality_data.items():
@@ -646,49 +721,58 @@ def calculate_smog_status(air_quality_data):
         components = values[3:]
         for component in components:
             component_id = component[0]
+            str_component_id = str(component_id)
+            
             try:
                 component_value = float(component[1])
                 
-                if component_id == 3:  # PM10
-                    latest_values["PM10"] = max(latest_values["PM10"], component_value)
-                elif component_id == 5:  # PM2.5
-                    latest_values["PM2.5"] = max(latest_values["PM2.5"], component_value)
-                elif component_id == 1:  # NO
-                    latest_values["NO"] = max(latest_values["NO"], component_value)
-                elif component_id == 9:  # O3
-                    latest_values["O3"] = max(latest_values["O3"], component_value)
+                # Verwende JSON-Mapping für die Komponenten-Identifikation
+                if str_component_id in AIR_QUALITY_COMPONENTS:
+                    component_code = AIR_QUALITY_COMPONENTS[str_component_id]["code"]
+                    if component_code in latest_values:
+                        latest_values[component_code] = max(latest_values[component_code], component_value)
             except:
                 continue
     
-    # Smog-Definition: Kombination aus hohen Werten für PM10, PM2.5 und NO bei geringer Luftbewegung
+    # Smog-Definition basierend auf UBA-Schwellenwerten
+    # Smog-Definition: Kombination aus hohen Werten für PM10, PM2.5 und NO2 bei geringer Luftbewegung
     smog_score = 0
     
-    if latest_values["PM10"] > 100:
+    # PM10 Bewertung (nach UBA-Skala)
+    if latest_values["PM10"] > 100:  # sehr schlecht
+        smog_score += 3
+    elif latest_values["PM10"] > 50:  # schlecht
         smog_score += 2
-    elif latest_values["PM10"] > 50:
+    elif latest_values["PM10"] > 35:  # mäßig
         smog_score += 1
         
-    if latest_values["PM2.5"] > 25:
+    # PM2.5 Bewertung (nach UBA-Skala)
+    if latest_values["PM2"] > 50:  # sehr schlecht
+        smog_score += 3
+    elif latest_values["PM2"] > 25:  # schlecht
         smog_score += 2
-    elif latest_values["PM2.5"] > 10:
+    elif latest_values["PM2"] > 20:  # mäßig
         smog_score += 1
         
-    if latest_values["NO"] > 100:
+    # NO2 Bewertung (nach UBA-Skala)
+    if latest_values["NO2"] > 200:  # sehr schlecht
+        smog_score += 3
+    elif latest_values["NO2"] > 100:  # schlecht
         smog_score += 2
-    elif latest_values["NO"] > 50:
+    elif latest_values["NO2"] > 40:  # mäßig
         smog_score += 1
     
     # Smog-Status basierend auf Score
-    if smog_score >= 5:
+    if smog_score >= 6:
         return {
             "status": "Gefahr",
-            "message": f"Hohe Smog-Belastung (PM10: {latest_values['PM10']:.1f}, PM2.5: {latest_values['PM2.5']:.1f}, NO: {latest_values['NO']:.1f})",
+            "message": f"Hohe Smog-Belastung (PM10: {latest_values['PM10']:.1f}, PM2.5: {latest_values['PM2']:.1f}, NO2: {latest_values['NO2']:.1f})",
             "score": smog_score
         }
     elif smog_score >= 3:
         return {
             "status": "Erhöht",
-            "message": f"Leicht erhöhte Smog-Werte (PM10: {latest_values['PM10']:.1f}, PM2.5: {latest_values['PM2.5']:.1f})",
+            "message": f"Leicht erhöhte Smog-Werte (PM10: {latest_values['PM10']:.1f}, PM2.5: {latest_values['PM2']:.1f})",
             "score": smog_score
         }
     else:
@@ -1093,6 +1177,3 @@ def find_nearest_city(lat, lon, locations):
             nearest_city = city
     
     return nearest_city
-
-if __name__ == "__main__":
-    app()
