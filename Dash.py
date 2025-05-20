@@ -22,6 +22,12 @@ AIR_QUALITY_COMPONENTS = {
     "12": {"code": "PM10NI", "symbol": "Ni", "unit": "ng/m³", "name": "Nickel in particulate matter"}
 }
 
+if __name__ == "__main__":
+    st.set_page_config(
+        page_title="Umwelt-Dashboard",
+        page_icon="🌍",
+        layout="wide"
+    )
 
 def app():
     
@@ -329,41 +335,41 @@ def app():
         
         if air_quality_data:
             # Berechnung des offiziellen LQI basierend auf dem schlechtesten Einzelwert
-            rating = calculate_air_quality_rating(air_quality_data)
+            rating, lqi_value = calculate_air_quality_rating(air_quality_data)
             
-            # Farbcodierte LQI-Anzeige entsprechend der UBA-Bewertung
+            # Farbcodierte LQI-Anzeige entsprechend der UBA-Bewertung mit LQI-Wert und weißer Schrift
             if rating == "Sehr gut":
-                st.markdown("""
+                st.markdown(f"""
                 <div style="background-color: #93dfeb; padding: 10px; border-radius: 5px; text-align: center;">
-                <h3 style="margin: 0; color: black;">Luftqualität: Sehr gut</h3>
+                <h3 style="margin: 0; color: white;">LQI: {lqi_value:.1f} - {rating}</h3>
                 </div>
                 """, unsafe_allow_html=True)
                 st.markdown("✅ **Beste Voraussetzungen, um sich ausgiebig im Freien aufzuhalten.**")
             elif rating == "Gut":
-                st.markdown("""
+                st.markdown(f"""
                 <div style="background-color: #8eca74; padding: 10px; border-radius: 5px; text-align: center;">
-                <h3 style="margin: 0; color: black;">Luftqualität: Gut</h3>
+                <h3 style="margin: 0; color: white;">LQI: {lqi_value:.1f} - {rating}</h3>
                 </div>
                 """, unsafe_allow_html=True)
                 st.markdown("✅ **Genießen Sie Ihre Aktivitäten im Freien, gesundheitlich nachteilige Wirkungen sind nicht zu erwarten.**")
             elif rating == "Mäßig":
-                st.markdown("""
+                st.markdown(f"""
                 <div style="background-color: #fde74c; padding: 10px; border-radius: 5px; text-align: center;">
-                <h3 style="margin: 0; color: black;">Luftqualität: Mäßig</h3>
+                <h3 style="margin: 0; color: white;">LQI: {lqi_value:.1f} - {rating}</h3>
                 </div>
                 """, unsafe_allow_html=True)
                 st.markdown("⚠️ **Kurzfristige nachteilige Auswirkungen auf die Gesundheit sind unwahrscheinlich. Empfindliche Personen sollten vorsichtig sein.**")
             elif rating == "Schlecht":
-                st.markdown("""
+                st.markdown(f"""
                 <div style="background-color: #e27266; padding: 10px; border-radius: 5px; text-align: center;">
-                <h3 style="margin: 0; color: black;">Luftqualität: Schlecht</h3>
+                <h3 style="margin: 0; color: white;">LQI: {lqi_value:.1f} - {rating}</h3>
                 </div>
                 """, unsafe_allow_html=True)
                 st.markdown("⚠️ **Bei empfindlichen Menschen können nachteilige gesundheitliche Wirkungen auftreten. Körperlich anstrengende Tätigkeiten im Freien vermeiden.**")
             elif rating == "Sehr schlecht":
-                st.markdown("""
+                st.markdown(f"""
                 <div style="background-color: #a02a2d; padding: 10px; border-radius: 5px; text-align: center;">
-                <h3 style="margin: 0; color: white;">Luftqualität: Sehr schlecht</h3>
+                <h3 style="margin: 0; color: white;">LQI: {lqi_value:.1f} - {rating}</h3>
                 </div>
                 """, unsafe_allow_html=True)
                 st.markdown("❌ **Negative gesundheitliche Auswirkungen können auftreten. Empfindliche Personen sollten körperliche Anstrengungen im Freien vermeiden.**")
@@ -445,153 +451,6 @@ def app():
             st.success(f"✅ Kein Smog: {smog_status['message']}")
     else:
         st.error("Keine Daten für Smog-Berechnung verfügbar")
-    
-    # Neue Legende für die Hauptansicht
-    st.markdown("---")
-    st.markdown("### 🔎 Erklärung der Luftqualitätswerte")
-    
-    # HTML für farbige Tabelle gemäß dem Bild
-    st.markdown("""
-    <style>
-    .lqi-table-small {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-        font-family: Arial, sans-serif;
-    }
-    .lqi-table-small th, .lqi-table-small td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: center;
-    }
-    .lqi-table-small th {
-        background-color: #f2f2f2;
-        font-weight: bold;
-    }
-    .sehr-schlecht {
-        background-color: #a02a2d;
-        color: white;
-    }
-    .schlecht {
-        background-color: #e27266;
-        color: black;
-    }
-    .maessig {
-        background-color: #fde74c;
-        color: black;
-    }
-    .gut {
-        background-color: #8eca74;
-        color: black;
-    }
-    .sehr-gut {
-        background-color: #93dfeb;
-        color: black;
-    }
-    </style>
-    
-    <table class="lqi-table-small">
-        <tr>
-            <th>Index</th>
-            <th>Stundenmittel NO₂ in μg/m³</th>
-            <th>stündlich gleitendes Tagesmittel PM₁₀ in μg/m³</th>
-            <th>stündlich gleitendes Tagesmittel PM₂,₅ in μg/m³</th>
-            <th>Stundenmittel O₃ in μg/m³</th>
-        </tr>
-        <tr class="sehr-schlecht">
-            <td>sehr schlecht</td>
-            <td>> 200</td>
-            <td>> 100</td>
-            <td>> 50</td>
-            <td>> 240</td>
-        </tr>
-        <tr class="schlecht">
-            <td>schlecht</td>
-            <td>101-200</td>
-            <td>51-100</td>
-            <td>26-50</td>
-            <td>181-240</td>
-        </tr>
-        <tr class="maessig">
-            <td>mäßig</td>
-            <td>41-100</td>
-            <td>36-50</td>
-            <td>21-25</td>
-            <td>121-180</td>
-        </tr>
-        <tr class="gut">
-            <td>gut</td>
-            <td>21-40</td>
-            <td>21-35</td>
-            <td>11-20</td>
-            <td>61-120</td>
-        </tr>
-        <tr class="sehr-gut">
-            <td>sehr gut</td>
-            <td>0-20</td>
-            <td>0-20</td>
-            <td>0-10</td>
-            <td>0-60</td>
-        </tr>
-    </table>
-    
-    <div style="display: flex; justify-content: space-between; text-align: center; margin-bottom: 20px;">
-        <div style="flex: 1; background-color: #a02a2d; color: white; padding: 8px; margin: 0 2px;">Sehr schlecht</div>
-        <div style="flex: 1; background-color: #e27266; color: black; padding: 8px; margin: 0 2px;">Schlecht</div>
-        <div style="flex: 1; background-color: #fde74c; color: black; padding: 8px; margin: 0 2px;">Mäßig</div>
-        <div style="flex: 1; background-color: #8eca74; color: black; padding: 8px; margin: 0 2px;">Gut</div>
-        <div style="flex: 1; background-color: #93dfeb; color: black; padding: 8px; margin: 0 2px;">Sehr gut</div>
-    </div>
-    
-    <p style="text-align: center; font-style: italic; margin-bottom: 20px;">
-    Der Schadstoff mit der schlechtesten Bewertung bestimmt die Gesamtbewertung der Luftqualität.
-    </p>
-    """, unsafe_allow_html=True)
-    
-    # Empfehlungen für die verschiedenen Luftqualitätsstufen
-    col1, col2, col3, col4, col5 = st.columns(5)
-    
-    with col1:
-        st.markdown("""
-        <div style="background-color: #a02a2d; color: white; padding: 5px; border-radius: 5px; text-align: center; margin-bottom: 5px;">
-        <strong>Sehr schlecht</strong>
-        </div>
-        """, unsafe_allow_html=True)
-        st.markdown("**Empfehlung:** Körperliche Anstrengungen im Freien vermeiden. Fenster geschlossen halten.")
-    
-    with col2:
-        st.markdown("""
-        <div style="background-color: #e27266; color: black; padding: 5px; border-radius: 5px; text-align: center; margin-bottom: 5px;">
-        <strong>Schlecht</strong>
-        </div>
-        """, unsafe_allow_html=True)
-        st.markdown("**Empfehlung:** Empfindliche Personen sollten körperliche Anstrengungen im Freien vermeiden.")
-    
-    with col3:
-        st.markdown("""
-        <div style="background-color: #fde74c; color: black; padding: 5px; border-radius: 5px; text-align: center; margin-bottom: 5px;">
-        <strong>Mäßig</strong>
-        </div>
-        """, unsafe_allow_html=True)
-        st.markdown("**Empfehlung:** Empfindliche Personen sollten die Luftqualität beachten, besonders bei Pollenflug.")
-    
-    with col4:
-        st.markdown("""
-        <div style="background-color: #8eca74; color: black; padding: 5px; border-radius: 5px; text-align: center; margin-bottom: 5px;">
-        <strong>Gut</strong>
-        </div>
-        """, unsafe_allow_html=True)
-        st.markdown("**Empfehlung:** Genießen Sie Aktivitäten im Freien. Keine gesundheitlichen Bedenken.")
-    
-    with col5:
-        st.markdown("""
-        <div style="background-color: #93dfeb; color: black; padding: 5px; border-radius: 5px; text-align: center; margin-bottom: 5px;">
-        <strong>Sehr gut</strong>
-        </div>
-        """, unsafe_allow_html=True)
-        st.markdown("**Empfehlung:** Beste Bedingungen für Aktivitäten im Freien.")
-    
-    st.markdown("---")
     
     # Detaillierte Tabs für weitere Informationen
     tab1, tab2, tab3, tab4 = st.tabs(["_Luftqualität Details_", "_Pollen Details_", "_Gewitter Details_", "_Saharastaub Details_"])
@@ -936,12 +795,14 @@ def calculate_air_quality_rating(air_quality_data):
     """Berechnung der Luftqualitätsbewertung basierend auf dem offiziellen Umweltbundesamt LQI
     
     Der LQI richtet sich nach dem Schadstoff mit der schlechtesten Bewertung.
+    Gibt sowohl Rating als auch den numerischen LQI-Wert zurück.
     """
     if not air_quality_data:
-        return "Keine Daten"
+        return "Keine Daten", 0
         
     # Extrahiere die neuesten Werte für relevante Komponenten
     pollutant_values = {}
+    lqi_values = []
     
     for timestamp, values in air_quality_data.items():
         components = values[3:]
@@ -951,6 +812,11 @@ def calculate_air_quality_rating(air_quality_data):
             
             try:
                 component_value = float(component[1])
+                
+                # Sammle alle LQI-Werte
+                if len(component) > 3:
+                    lqi_value = float(component[3])
+                    lqi_values.append(lqi_value)
                 
                 # Verwende JSON-Mapping für die Komponenten-Identifikation
                 if str_component_id in AIR_QUALITY_COMPONENTS:
@@ -969,7 +835,12 @@ def calculate_air_quality_rating(air_quality_data):
             avg_values[comp] = np.mean(values)
     
     if not avg_values:
-        return "Keine Daten"
+        return "Keine Daten", 0
+    
+    # Berechne den LQI-Durchschnittswert
+    avg_lqi = 0
+    if lqi_values:
+        avg_lqi = np.mean(lqi_values)
     
     # Bewerte jeden Schadstoff und finde die schlechteste Bewertung
     ratings = []
@@ -979,15 +850,15 @@ def calculate_air_quality_rating(air_quality_data):
     
     # Priorität: Sehr schlecht > Schlecht > Mäßig > Gut > Sehr gut
     if "Sehr schlecht" in ratings:
-        return "Sehr schlecht"
+        return "Sehr schlecht", avg_lqi
     elif "Schlecht" in ratings:
-        return "Schlecht"
+        return "Schlecht", avg_lqi
     elif "Mäßig" in ratings:
-        return "Mäßig"
+        return "Mäßig", avg_lqi
     elif "Gut" in ratings:
-        return "Gut"
+        return "Gut", avg_lqi
     else:
-        return "Sehr gut"
+        return "Sehr gut", avg_lqi
 
 def interpret_component(comp, val):
     """Interpretiert den Messwert einer Komponente gemäß offizieller Umweltbundesamt-Luftqualitätsindex-Skala"""
@@ -1490,3 +1361,6 @@ def find_nearest_city(lat, lon, locations):
             nearest_city = city
     
     return nearest_city
+
+if __name__ == "__main__":
+    app()
