@@ -41,10 +41,10 @@ def app():
         height: 50px;
         white-space: pre-wrap;
         background-color: #f0f2f6;
-        border-radius: 4px 4px 2px 2px;
-        gap: 1px;
+        border-radius: 4px 4px 3px 3px;
+        gap: 3px;
         padding-top: 10px;
-        padding-bottom: 10px;
+        padding-bottom: 20px;
     }
     .stTabs [aria-selected="true"] {
         background-color: #e6f0ff;
