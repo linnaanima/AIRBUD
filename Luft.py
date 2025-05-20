@@ -361,7 +361,7 @@ def app():
         
         # Customize the layout
         fig.update_layout(
-            title=f"Luftqualitätstrends für {selected_station_name}",
+            title=f"",
             xaxis_title="Zeitpunkt",
             yaxis_title="Messwert",
             template="plotly_white",
