@@ -38,12 +38,6 @@ def app():
     .moderate { color: #f6e45e; font-weight: bold; }
     .poor { color: #e87461; font-weight: bold; }
     .very-poor { color: #962945; font-weight: bold; }
-    .control-panel {
-        background-color: white;
-        padding: 15px;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        margin-bottom: 20px;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -120,7 +114,7 @@ def app():
         9: {"name": "PM2.5", "unit": "µg/m³"}
     }
 
-    st.title("🌬️ Luftqualitätsmonitor Deutschland")
+    st.subheader("Luftqualitätsmonitor Deutschland")
     st.markdown("Überwachung und Analyse der Luftqualität an verschiedenen Messstationen in Deutschland")
 
     # Station selection and date controls in main area
