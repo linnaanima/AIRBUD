@@ -22,7 +22,6 @@ AIR_QUALITY_COMPONENTS = {
     "12": {"code": "PM10NI", "symbol": "Ni", "unit": "ng/m³", "name": "Nickel in particulate matter"}
 }
 
-
 def app():
     
     # Stile für das Dashboard
@@ -275,11 +274,18 @@ def app():
     
     # Daten abrufen
     with st.spinner("Lade alle Umweltdaten..."):
-        # Luftqualitätsdaten
+        # Luftqualitätsdaten - erweiterte Zeitfenster für bessere Datenverfügbarkeit
         progress_bar.progress(10)
+        
+        # Seitenleiste für Dateneinstellungen
+        with st.sidebar:
+            st.header("Daten-Einstellungen")
+            data_days = st.slider("Daten der letzten X Tage anzeigen:", 1, 7, 3)
+            st.info("Bei älteren Daten kann die Anzeige des aktuellen Tages verzerrt sein.")
+        
         air_quality_data = get_air_quality_data(
             station_id, 
-            (datetime.now() - timedelta(days=1)).date(), 
+            (datetime.now() - timedelta(days=data_days)).date(), 
             datetime.now().date(), 
             "00:00", 
             "23:59"
@@ -466,12 +472,55 @@ def get_air_quality_data(station_id, start_date, end_date, start_time, end_time)
             "time_to": end_time,
             "lang": "de"
         }
+        
+        st.info(f"Rufe Luftqualitätsdaten ab für Station {station_id} vom {start_date} bis {end_date}")
+        
         response = requests.get(url, params=params)
         if response.status_code != 200:
             st.error(f"❌ Fehler beim Abruf der Luftqualitätsdaten: {response.status_code}")
             return None
+        
         data = response.json()
-        return data.get("data", {}).get(str(station_id), {})
+        station_data = data.get("data", {}).get(str(station_id), {})
+        
+        # Prüfe, ob Daten vorhanden sind
+        if not station_data:
+            st.warning(f"Keine Daten für Station {station_id} im angegebenen Zeitraum verfügbar.")
+            
+            # Versuche, einen größeren Zeitraum abzurufen (bis zu 7 Tage zurück)
+            for days_back in [3, 5, 7]:
+                earlier_start = (datetime.now() - timedelta(days=days_back)).date()
+                st.info(f"Versuche, Daten vom {earlier_start} bis {end_date} abzurufen...")
+                
+                params["date_from"] = str(earlier_start)
+                backup_response = requests.get(url, params=params)
+                
+                if backup_response.status_code == 200:
+                    backup_data = backup_response.json()
+                    backup_station_data = backup_data.get("data", {}).get(str(station_id), {})
+                    
+                    if backup_station_data:
+                        st.success(f"Daten erfolgreich für einen erweiterten Zeitraum abgerufen: {earlier_start} bis {end_date}")
+                        return backup_station_data
+            
+            st.error("Keine Daten auch nach erweiterter Suche verfügbar.")
+            return None
+            
+        # Wenn Daten gefunden wurden, prüfe das neueste Datum
+        timestamps = list(station_data.keys())
+        if timestamps:
+            latest_timestamp = max(timestamps)
+            data_time = datetime.strptime(latest_timestamp, "%Y-%m-%d %H:%M:%S")
+            time_diff = datetime.now() - data_time
+            
+            # Zeige Information über das Datums-Alter an
+            hours_diff = time_diff.total_seconds() / 3600
+            if hours_diff > 24:
+                st.warning(f"⚠️ Die neuesten Daten sind {int(hours_diff)} Stunden alt (von {data_time.strftime('%d.%m.%Y %H:%M')})")
+            else:
+                st.success(f"Neueste Daten von {data_time.strftime('%d.%m.%Y %H:%M')} (vor {int(hours_diff)} Stunden)")
+        
+        return station_data
     except Exception as e:
         st.error(f"❌ Fehler bei der Verarbeitung der Luftqualitätsdaten: {str(e)}")
         return None
