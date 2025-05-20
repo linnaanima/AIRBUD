@@ -11,13 +11,7 @@ from folium.plugins import MarkerCluster
 import branca.colormap as cm
 
 def app():
-    # Set page config
-    st.set_page_config(
-        page_title="Luftqualitätsmonitor",
-        page_icon="🌬️",
-        layout="wide",
-        initial_sidebar_state="expanded"
-    )
+
     
     # Custom CSS for better aesthetics
     st.markdown("""
