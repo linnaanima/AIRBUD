@@ -22,6 +22,7 @@ AIR_QUALITY_COMPONENTS = {
     "12": {"code": "PM10NI", "symbol": "Ni", "unit": "ng/m³", "name": "Nickel in particulate matter"}
 }
 
+
 def app():
     
     # Stile für das Dashboard
@@ -274,14 +275,14 @@ def app():
     
     # Daten abrufen
     with st.spinner("Lade alle Umweltdaten..."):
-        # Luftqualitätsdaten - erweiterte Zeitfenster für bessere Datenverfügbarkeit
+        # Luftqualitätsdaten - standardmäßig die letzten 24 Stunden
         progress_bar.progress(10)
         
         # Seitenleiste für Dateneinstellungen
         with st.sidebar:
             st.header("Daten-Einstellungen")
-            data_days = st.slider("Daten der letzten X Tage anzeigen:", 1, 7, 3)
-            st.info("Bei älteren Daten kann die Anzeige des aktuellen Tages verzerrt sein.")
+            data_days = st.slider("Daten der letzten X Tage anzeigen:", 1, 7, 1)
+            st.info("Standardmäßig werden nur die letzten 24 Stunden angezeigt.")
         
         air_quality_data = get_air_quality_data(
             station_id, 
