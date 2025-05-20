@@ -1,3 +1,11 @@
+import streamlit as st
+import requests
+import pandas as pd
+import numpy as np
+from datetime import datetime, timedelta
+from geopy.geocoders import Nominatim
+import json
+
 # Air quality component definitions as JSON
 AIR_QUALITY_COMPONENTS = {
     "1": {"code": "PM10", "symbol": "PM₁₀", "unit": "µg/m³", "name": "Particulate matter"},
@@ -14,12 +22,6 @@ AIR_QUALITY_COMPONENTS = {
     "12": {"code": "PM10NI", "symbol": "Ni", "unit": "ng/m³", "name": "Nickel in particulate matter"}
 }
 
-if __name__ == "__main__":
-    st.set_page_config(
-        page_title="Umwelt-Dashboard",
-        page_icon="🌍",
-        layout="wide"
-    )
 
 def app():
     
