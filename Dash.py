@@ -22,7 +22,6 @@ AIR_QUALITY_COMPONENTS = {
     "12": {"code": "PM10NI", "symbol": "Ni", "unit": "ng/m³", "name": "Nickel in particulate matter"}
 }
 
-
 def app():
     
     # Stile für das Dashboard
@@ -333,19 +332,39 @@ def app():
             
             # Farbcodierte LQI-Anzeige entsprechend der UBA-Bewertung
             if rating == "Sehr gut":
-                st.success(f"🟦 Luftqualität: {rating}")
+                st.markdown("""
+                <div style="background-color: #93dfeb; padding: 10px; border-radius: 5px; text-align: center;">
+                <h3 style="margin: 0; color: black;">Luftqualität: Sehr gut</h3>
+                </div>
+                """, unsafe_allow_html=True)
                 st.markdown("✅ **Beste Voraussetzungen, um sich ausgiebig im Freien aufzuhalten.**")
             elif rating == "Gut":
-                st.info(f"🟩 Luftqualität: {rating}")
+                st.markdown("""
+                <div style="background-color: #8eca74; padding: 10px; border-radius: 5px; text-align: center;">
+                <h3 style="margin: 0; color: black;">Luftqualität: Gut</h3>
+                </div>
+                """, unsafe_allow_html=True)
                 st.markdown("✅ **Genießen Sie Ihre Aktivitäten im Freien, gesundheitlich nachteilige Wirkungen sind nicht zu erwarten.**")
             elif rating == "Mäßig":
-                st.warning(f"🟨 Luftqualität: {rating}")
+                st.markdown("""
+                <div style="background-color: #fde74c; padding: 10px; border-radius: 5px; text-align: center;">
+                <h3 style="margin: 0; color: black;">Luftqualität: Mäßig</h3>
+                </div>
+                """, unsafe_allow_html=True)
                 st.markdown("⚠️ **Kurzfristige nachteilige Auswirkungen auf die Gesundheit sind unwahrscheinlich. Empfindliche Personen sollten vorsichtig sein.**")
             elif rating == "Schlecht":
-                st.error(f"🟧 Luftqualität: {rating}")
+                st.markdown("""
+                <div style="background-color: #e27266; padding: 10px; border-radius: 5px; text-align: center;">
+                <h3 style="margin: 0; color: black;">Luftqualität: Schlecht</h3>
+                </div>
+                """, unsafe_allow_html=True)
                 st.markdown("⚠️ **Bei empfindlichen Menschen können nachteilige gesundheitliche Wirkungen auftreten. Körperlich anstrengende Tätigkeiten im Freien vermeiden.**")
             elif rating == "Sehr schlecht":
-                st.error(f"🟥 Luftqualität: {rating}")
+                st.markdown("""
+                <div style="background-color: #a02a2d; padding: 10px; border-radius: 5px; text-align: center;">
+                <h3 style="margin: 0; color: white;">Luftqualität: Sehr schlecht</h3>
+                </div>
+                """, unsafe_allow_html=True)
                 st.markdown("❌ **Negative gesundheitliche Auswirkungen können auftreten. Empfindliche Personen sollten körperliche Anstrengungen im Freien vermeiden.**")
             else:
                 st.warning("Keine ausreichenden LQI-Daten verfügbar")
@@ -425,6 +444,153 @@ def app():
             st.success(f"✅ Kein Smog: {smog_status['message']}")
     else:
         st.error("Keine Daten für Smog-Berechnung verfügbar")
+    
+    # Neue Legende für die Hauptansicht
+    st.markdown("---")
+    st.markdown("### 🔎 Erklärung der Luftqualitätswerte")
+    
+    # HTML für farbige Tabelle gemäß dem Bild
+    st.markdown("""
+    <style>
+    .lqi-table-small {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        font-family: Arial, sans-serif;
+    }
+    .lqi-table-small th, .lqi-table-small td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
+    .lqi-table-small th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+    .sehr-schlecht {
+        background-color: #a02a2d;
+        color: white;
+    }
+    .schlecht {
+        background-color: #e27266;
+        color: black;
+    }
+    .maessig {
+        background-color: #fde74c;
+        color: black;
+    }
+    .gut {
+        background-color: #8eca74;
+        color: black;
+    }
+    .sehr-gut {
+        background-color: #93dfeb;
+        color: black;
+    }
+    </style>
+    
+    <table class="lqi-table-small">
+        <tr>
+            <th>Index</th>
+            <th>Stundenmittel NO₂ in μg/m³</th>
+            <th>stündlich gleitendes Tagesmittel PM₁₀ in μg/m³</th>
+            <th>stündlich gleitendes Tagesmittel PM₂,₅ in μg/m³</th>
+            <th>Stundenmittel O₃ in μg/m³</th>
+        </tr>
+        <tr class="sehr-schlecht">
+            <td>sehr schlecht</td>
+            <td>> 200</td>
+            <td>> 100</td>
+            <td>> 50</td>
+            <td>> 240</td>
+        </tr>
+        <tr class="schlecht">
+            <td>schlecht</td>
+            <td>101-200</td>
+            <td>51-100</td>
+            <td>26-50</td>
+            <td>181-240</td>
+        </tr>
+        <tr class="maessig">
+            <td>mäßig</td>
+            <td>41-100</td>
+            <td>36-50</td>
+            <td>21-25</td>
+            <td>121-180</td>
+        </tr>
+        <tr class="gut">
+            <td>gut</td>
+            <td>21-40</td>
+            <td>21-35</td>
+            <td>11-20</td>
+            <td>61-120</td>
+        </tr>
+        <tr class="sehr-gut">
+            <td>sehr gut</td>
+            <td>0-20</td>
+            <td>0-20</td>
+            <td>0-10</td>
+            <td>0-60</td>
+        </tr>
+    </table>
+    
+    <div style="display: flex; justify-content: space-between; text-align: center; margin-bottom: 20px;">
+        <div style="flex: 1; background-color: #a02a2d; color: white; padding: 8px; margin: 0 2px;">Sehr schlecht</div>
+        <div style="flex: 1; background-color: #e27266; color: black; padding: 8px; margin: 0 2px;">Schlecht</div>
+        <div style="flex: 1; background-color: #fde74c; color: black; padding: 8px; margin: 0 2px;">Mäßig</div>
+        <div style="flex: 1; background-color: #8eca74; color: black; padding: 8px; margin: 0 2px;">Gut</div>
+        <div style="flex: 1; background-color: #93dfeb; color: black; padding: 8px; margin: 0 2px;">Sehr gut</div>
+    </div>
+    
+    <p style="text-align: center; font-style: italic; margin-bottom: 20px;">
+    Der Schadstoff mit der schlechtesten Bewertung bestimmt die Gesamtbewertung der Luftqualität.
+    </p>
+    """, unsafe_allow_html=True)
+    
+    # Empfehlungen für die verschiedenen Luftqualitätsstufen
+    col1, col2, col3, col4, col5 = st.columns(5)
+    
+    with col1:
+        st.markdown("""
+        <div style="background-color: #a02a2d; color: white; padding: 5px; border-radius: 5px; text-align: center; margin-bottom: 5px;">
+        <strong>Sehr schlecht</strong>
+        </div>
+        """, unsafe_allow_html=True)
+        st.markdown("**Empfehlung:** Körperliche Anstrengungen im Freien vermeiden. Fenster geschlossen halten.")
+    
+    with col2:
+        st.markdown("""
+        <div style="background-color: #e27266; color: black; padding: 5px; border-radius: 5px; text-align: center; margin-bottom: 5px;">
+        <strong>Schlecht</strong>
+        </div>
+        """, unsafe_allow_html=True)
+        st.markdown("**Empfehlung:** Empfindliche Personen sollten körperliche Anstrengungen im Freien vermeiden.")
+    
+    with col3:
+        st.markdown("""
+        <div style="background-color: #fde74c; color: black; padding: 5px; border-radius: 5px; text-align: center; margin-bottom: 5px;">
+        <strong>Mäßig</strong>
+        </div>
+        """, unsafe_allow_html=True)
+        st.markdown("**Empfehlung:** Empfindliche Personen sollten die Luftqualität beachten, besonders bei Pollenflug.")
+    
+    with col4:
+        st.markdown("""
+        <div style="background-color: #8eca74; color: black; padding: 5px; border-radius: 5px; text-align: center; margin-bottom: 5px;">
+        <strong>Gut</strong>
+        </div>
+        """, unsafe_allow_html=True)
+        st.markdown("**Empfehlung:** Genießen Sie Aktivitäten im Freien. Keine gesundheitlichen Bedenken.")
+    
+    with col5:
+        st.markdown("""
+        <div style="background-color: #93dfeb; color: black; padding: 5px; border-radius: 5px; text-align: center; margin-bottom: 5px;">
+        <strong>Sehr gut</strong>
+        </div>
+        """, unsafe_allow_html=True)
+        st.markdown("**Empfehlung:** Beste Bedingungen für Aktivitäten im Freien.")
+    
+    st.markdown("---")
     
     # Detaillierte Tabs für weitere Informationen
     tab1, tab2, tab3, tab4 = st.tabs(["_Luftqualität Details_", "_Pollen Details_", "_Gewitter Details_", "_Saharastaub Details_"])
@@ -527,6 +693,29 @@ def display_air_quality_details(air_quality_data):
     """Aufbereitung und Anzeige der detaillierten Luftqualitätsdaten"""
     st.subheader("Luftqualitätsdetails")
     
+    if not air_quality_data:
+        st.error("Keine Luftqualitätsdaten verfügbar.")
+        return
+    
+    # Zeige Informationen zum Datenalter an
+    timestamps = list(air_quality_data.keys())
+    if timestamps:
+        latest_timestamp = max(timestamps)
+        
+        latest_time = datetime.strptime(latest_timestamp, "%Y-%m-%d %H:%M:%S")
+        
+        time_diff = datetime.now() - latest_time
+        hours_diff = time_diff.total_seconds() / 3600
+        
+        if hours_diff < 3:
+            st.success(f"✅ Aktuelle Daten (letzter Messwert von {latest_time.strftime('%d.%m.%Y %H:%M')})")
+        elif hours_diff < 12:
+            st.info(f"ℹ️ Relativ aktuelle Daten (letzter Messwert von {latest_time.strftime('%d.%m.%Y %H:%M')})")
+        elif hours_diff < 24:
+            st.warning(f"⚠️ Etwas ältere Daten (letzter Messwert von {latest_time.strftime('%d.%m.%Y %H:%M')})")
+        else:
+            st.error(f"❌ Ältere Daten (letzter Messwert von {latest_time.strftime('%d.%m.%Y %H:%M')})")
+    
     air_quality_list = []
     components_data = {}
     
@@ -576,6 +765,20 @@ def display_air_quality_details(air_quality_data):
     # Aktuelle Messwerte anzeigen
     st.subheader("Aktuelle Messwerte & Gesundheitsbewertung")
     
+    # Information zu unvollständiger Datengrundlage
+    measured_components = list(components_data.keys())
+    all_key_components = ["PM10", "PM2", "NO2", "O3"]
+    missing_components = [c for c in all_key_components if c not in measured_components]
+    
+    st.info(f"""
+    **Gemessene Luftqualitätskomponenten:** {", ".join(measured_components)}
+    
+    {"" if not missing_components else f"**Nicht gemessene Komponenten:** {', '.join(missing_components)}"}
+    
+    Das Umweltbundesamt berechnet den Luftqualitätsindex basierend auf bis zu vier Schadstoffen (NO₂, PM₁₀, PM₂,₅, O₃). 
+    Der Schadstoff mit der schlechtesten Bewertung bestimmt die Gesamtbewertung der Luftqualität.
+    """)
+    
     # Tabelle mit allen aktuellen Komponenten
     latest_values = {}
     for comp_name, data_list in components_data.items():
@@ -600,54 +803,106 @@ def display_air_quality_details(air_quality_data):
                 symbol = comp
                 full_name = "Unbekannt"
                 unit = "µg/m³"
+            
+            # Farbcodierung für die Bewertung basierend auf UBA-Farben
+            quality_style = ""
+            if qual == "Sehr gut":
+                quality_style = "background-color: #93dfeb; color: black; padding: 3px 6px; border-radius: 3px;"
+            elif qual == "Gut":
+                quality_style = "background-color: #8eca74; color: black; padding: 3px 6px; border-radius: 3px;"
+            elif qual == "Mäßig":
+                quality_style = "background-color: #fde74c; color: black; padding: 3px 6px; border-radius: 3px;"
+            elif qual == "Schlecht":
+                quality_style = "background-color: #e27266; color: black; padding: 3px 6px; border-radius: 3px;"
+            else:  # Sehr schlecht
+                quality_style = "background-color: #a02a2d; color: white; padding: 3px 6px; border-radius: 3px;"
+                
+            qual_formatted = f"<span style='{quality_style}'>{qual}</span>"
                 
             messwerte.append({
                 "Symbol": symbol,
                 "Name": full_name,
                 f"Wert ({unit})": val,
-                "Bewertung": qual
+                "Bewertung": qual_formatted
             })
         
+        # DataFrame mit HTML-formatierter Bewertungsspalte
         df_messwerte = pd.DataFrame(messwerte)
-        st.dataframe(df_messwerte, hide_index=True, use_container_width=True)
+        
+        # HTML-formatierte Tabelle
+        st.markdown(
+            df_messwerte.to_html(escape=False, index=False),
+            unsafe_allow_html=True
+        )
     
-    # Verhaltensempfehlungen nur anzeigen, wenn Luftqualität schlecht ist
-    avg_rating = "Gut"  # Standardwert
-    if latest_values:
-        ratings = [interpret_component(comp, val) for comp, val in latest_values.items()]
-        if "Schlecht" in ratings:
-            avg_rating = "Schlecht"
+    # Verhaltensempfehlungen basierend auf UBA-Vorgaben
+    st.subheader("Verhaltensempfehlungen bei aktueller Luftqualität")
     
-    # Nur Verhaltensempfehlungen anzeigen, wenn Luftqualität schlecht ist (nicht bei mäßig)
-    if avg_rating == "Schlecht":
-        st.subheader("Verhaltensempfehlungen bei aktueller Luftqualität")
-        
-        # Erhöhte Feinstaubwerte identifizieren und anzeigen
-        elevated_components = []
-        for comp, val in latest_values.items():
-            rating = interpret_component(comp, val)
-            if rating == "Schlecht":
-                # Finden der vollständigen Informationen für diese Komponente
-                comp_info = next((AIR_QUALITY_COMPONENTS[cid] for cid, info in AIR_QUALITY_COMPONENTS.items() 
-                                if info["code"] == comp), None)
-                unit = comp_info["unit"] if comp_info else "µg/m³"
-                elevated_components.append(f"{comp}: {val:.1f} {unit} ({rating})")
-        
-        if elevated_components:
-            st.info(f"**Erhöhte Schadstoffwerte:** {', '.join(elevated_components)}")
-        
-        # Empfehlungen für schlechte Luftqualität
+    # Bestimme den aktuellen LQI basierend auf dem schlechtesten Wert
+    worst_rating = "Sehr gut"
+    for comp, val in latest_values.items():
+        qual = interpret_component(comp, val)
+        if qual in ["Sehr schlecht", "Schlecht", "Mäßig", "Gut"]:
+            # Priorisierung: Sehr schlecht > Schlecht > Mäßig > Gut > Sehr gut
+            if qual == "Sehr schlecht":
+                worst_rating = qual
+                break
+            elif qual == "Schlecht" and worst_rating != "Sehr schlecht":
+                worst_rating = qual
+            elif qual == "Mäßig" and worst_rating not in ["Sehr schlecht", "Schlecht"]:
+                worst_rating = qual
+            elif qual == "Gut" and worst_rating not in ["Sehr schlecht", "Schlecht", "Mäßig"]:
+                worst_rating = qual
+    
+    # Empfehlungen nach UBA
+    if worst_rating == "Sehr schlecht":
         st.error("""
-        ❌ **Bei schlechter Luftqualität:**
+        ❌ **Bei sehr schlechter Luftqualität:**
+        
+        Negative gesundheitliche Auswirkungen können auftreten. Wer empfindlich ist oder vorgeschädigte 
+        Atemwege hat, sollte körperliche Anstrengungen im Freien vermeiden.
+        
         - Vermeiden Sie Aktivitäten im Freien, besonders an stark befahrenen Straßen
-        - Halten Sie Fenster geschlossen, besonders zu Hauptverkehrszeiten
+        - Halten Sie Fenster geschlossen
         - Asthmatiker und Personen mit Lungenerkrankungen: Notfallmedikamente griffbereit halten
         - Verwenden Sie ggf. einen Luftreiniger in Innenräumen
         - Bei Symptomen wie Atemnot, Husten oder Reizungen: Ärztlichen Rat einholen
         """)
+    elif worst_rating == "Schlecht":
+        st.warning("""
+        ⚠️ **Bei schlechter Luftqualität:**
+        
+        Bei empfindlichen Menschen können nachteilige gesundheitliche Wirkungen auftreten. Diese sollten 
+        körperlich anstrengende Tätigkeiten im Freien vermeiden. In Kombination mit weiteren Luftschadstoffen 
+        können auch weniger empfindliche Menschen auf die Luftbelastung reagieren.
+        
+        - Empfindliche Personen sollten körperliche Anstrengungen im Freien vermeiden
+        - Halten Sie Fenster in verkehrsreichen Zeiten geschlossen
+        - Asthmapatienten: Inhalator bereithalten
+        """)
+    elif worst_rating == "Mäßig":
+        st.info("""
+        ℹ️ **Bei mäßiger Luftqualität:**
+        
+        Kurzfristige nachteilige Auswirkungen auf die Gesundheit sind unwahrscheinlich. Allerdings können 
+        Effekte durch Luftschadstoffkombinationen und bei langfristiger Einwirkung des Einzelstoffes nicht 
+        ausgeschlossen werden. Zusätzliche Reize, z.B. ausgelöst durch Pollenflug, können die Wirkung der 
+        Luftschadstoffe verstärken, so dass Effekte bei empfindlichen Personengruppen (z.B. Asthmatikern) 
+        wahrscheinlicher werden.
+        
+        - Empfindliche Personen sollten die Luftqualität im Auge behalten
+        - Bei zusätzlichen Faktoren wie Pollenflug vorsichtig sein
+        """)
+    else:  # Gut oder Sehr gut
+        st.success("""
+        ✅ **Bei guter/sehr guter Luftqualität:**
+        
+        Genießen Sie Ihre Aktivitäten im Freien, gesundheitlich nachteilige Wirkungen sind nicht zu erwarten.
+        
+        Beste Voraussetzungen, um sich ausgiebig im Freien aufzuhalten.
+        """)
     
-
-    # Kombiniertes Diagramm für alle Komponenten
+    # Kombiniertes Diagramm für alle Komponenten (nur 24 Stunden)
     st.subheader("Verlauf der letzten 24 Stunden (alle Komponenten)")
     
     if components_data:
@@ -662,7 +917,15 @@ def display_air_quality_details(air_quality_data):
                 combined_df[comp_name] = df_comp["Messwert"]
         
         if not combined_df.empty:
-            st.line_chart(combined_df)
+            # Filter für die letzten 24 Stunden
+            cutoff_time = datetime.now() - timedelta(days=1)
+            filtered_df = combined_df[combined_df.index > cutoff_time]
+            
+            if filtered_df.empty:
+                st.warning("Keine Daten für die letzten 24 Stunden verfügbar. Zeige alle verfügbaren Daten an.")
+                st.line_chart(combined_df)
+            else:
+                st.line_chart(filtered_df)
         else:
             st.warning("Keine Daten für das Diagramm verfügbar")
     else:
@@ -1014,9 +1277,9 @@ def get_thunder_forecast(lat, lon):
         for time, code in zip(times, codes):
             # Wettercodes für Gewitter: 95 (leichtes Gewitter), 96, 99 (starkes Gewitter)
             if code in [95, 96, 99]:
-                # Formatiere Zeit für Anzeige
+                # Formatiere Zeit für Anzeige - Korrigiertes Format
                 dt = datetime.fromisoformat(time)
-                formatted_time = dt.strftime("%d.%m.%Y %H:%00 Uhr")
+                formatted_time = dt.strftime("%d.%m.%Y %H:00 Uhr")  # Festes Format mit :00
                 intensitaet = "starkes" if code in [96, 99] else "leichtes"
                 gewitterzeiten.append({"zeit": formatted_time, "intensitaet": intensitaet})
                 
